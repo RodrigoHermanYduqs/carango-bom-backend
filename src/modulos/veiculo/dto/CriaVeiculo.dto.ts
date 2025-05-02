@@ -2,6 +2,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
+  MaxLength,
   Min,
   MinLength
 } from 'class-validator';
@@ -9,6 +10,7 @@ import {
 export class CriaVeiculoDTO {
   @IsNotEmpty({ message: 'Modelo não pode ser vazio' })
   @MinLength(2, { message: 'Modelo deve ter no mínino 2 caracteres' })
+  @MaxLength(50, { message: 'Modelo deve ter no máximo 50 caracteres' })
   modelo: string;
 
   @IsNotEmpty({ message: 'Valor não pode ser vazio' })

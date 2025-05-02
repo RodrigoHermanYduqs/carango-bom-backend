@@ -3,7 +3,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  RelationId,
   JoinColumn
 } from 'typeorm';
 import { MarcaEntity } from '../marca/marca.entity';
@@ -16,10 +15,10 @@ export class VeiculoEntity {
   @Column({ name: 'modelo', length: 50, nullable: false })
   modelo: string;
 
-  @Column({ name: 'ano', nullable: false })
+  @Column({ name: 'ano',  type: 'decimal', nullable: false })
   ano: number;
 
-  @Column({ name: 'valor', nullable: false })
+  @Column({ name: 'valor', type: 'decimal', nullable: false })
   valor: number;
   
   @Column({ name: 'marca_id', nullable: false })

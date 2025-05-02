@@ -21,7 +21,6 @@ export class VeiculoController {
 
   @Post()
   public async criaVeiculo(@Body() dadosVeiculo: CriaVeiculoDTO) {
-    console.log('dadosVeiculo:', dadosVeiculo);
 
     const veiculoCadastrado = await this.veiculoService.criaVeiculo(
       dadosVeiculo,
@@ -32,7 +31,6 @@ export class VeiculoController {
 
   @Get()
   public async obtemVeiculos() {
-    //return await this.veiculoService.obtemVeiculos();
     const veiculos = await this.veiculoService.obtemVeiculos();
     return veiculos;
   }

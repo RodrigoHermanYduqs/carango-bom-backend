@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { VeiculoDTO } from './dto/Veiculo.dto';
 import { VeiculoEntity } from './veiculo.entity';
 import { Repository } from 'typeorm';
 import { AtualizaVeiculoDTO } from './dto/AtualizaVeiculo.dto';
 import { CriaVeiculoDTO } from './dto/CriaVeiculo.dto';
 import { MarcaService } from '../marca/marca.service';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class VeiculoService {
@@ -13,7 +13,7 @@ export class VeiculoService {
   constructor(
     @InjectRepository(VeiculoEntity)
     private readonly veiculoRepository: Repository<VeiculoEntity>,
-    private readonly marcaService: MarcaService
+    @Inject(forwardRef(() => MarcaService)) private readonly marcaService: MarcaService
   ) {}
 
   public async criaVeiculo(dadosVeiculo: CriaVeiculoDTO) {
@@ -31,8 +31,6 @@ export class VeiculoService {
 
   async obtemVeiculos() {
     const veiculosSalvos = await this.veiculoRepository.find({});
-
-    console.log('veiculosSalvos:',veiculosSalvos);
 
     const veiculosLista = veiculosSalvos.map(
       (veiculo) =>
@@ -105,3 +103,4 @@ export class VeiculoService {
     return veiculo;
   }
 }
+

@@ -1,12 +1,13 @@
-import { IsInt, IsNotEmpty, IsNumber, Min, MinLength } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, MaxLength, Min, MinLength } from 'class-validator';
 
 export class AtualizaVeiculoDTO {
     @IsNotEmpty({ message: 'Modelo não pode ser vazio' })
     @MinLength(2, { message: 'Modelo deve ter no mínino 2 caracteres' })
+    @MaxLength(50, { message: 'Modelo deve ter no máximo 50 caracteres' })
     modelo: string;
 
     @IsNotEmpty({ message: 'Valor não pode ser vazio' })
-    @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
+    @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false }, { message: 'O valor deve ser um número com no máximo 2 casas decimais' })
     @Min(0.01, { message: 'O valor precisa ser maior que zero' })
     valor: number;
 
@@ -18,3 +19,4 @@ export class AtualizaVeiculoDTO {
     @IsNotEmpty({ message: 'marcaId não pode ser vazio' })
     marcaId: string;
 }
+ 

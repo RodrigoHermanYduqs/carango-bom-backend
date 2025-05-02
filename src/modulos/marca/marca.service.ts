@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { CriaMarcaDTO } from './dto/CriaMarca.dto';
 import { AtualizaMarcaDto } from './dto/AtualizaMarca.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { MarcaEntity } from './marca.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { VeiculoService } from '../veiculo/veiculo.service';
 
 @Injectable()
 export class MarcaService {
@@ -16,6 +19,7 @@ export class MarcaService {
   constructor(
     @InjectRepository(MarcaEntity)
     private readonly marcaRepository: Repository<MarcaEntity>,
+    @Inject(forwardRef(() => VeiculoService)) private readonly veiculoService: VeiculoService
   ) {}
 
   public async obtemMarcas(): Promise<MarcaEntity[]> {
@@ -50,6 +54,14 @@ export class MarcaService {
   }
 
   public async excluiMarca(id: string) {
+
+    const veiculos = await this.veiculoService.obtemVeiculosPorMarca(id);
+
+    if (veiculos.length > 0)
+    {
+      throw new ConflictException('Existem veículos cadastrados dessa marca');
+    }
+
     await this.buscaMarcaPorId(id);
 
     await this.marcaRepository.delete({ id });
